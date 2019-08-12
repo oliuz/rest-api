@@ -27,3 +27,15 @@ Route::group(['middleware' => ['auth:api']], function () {
    }); 
 
 });
+
+
+
+
+// Exception Route
+
+Route::fallback(function () {
+
+   return response(['status' => '404'], 404)
+      ->header('Content-Type', 'text/plain');
+
+});

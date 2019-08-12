@@ -33,6 +33,27 @@ class RegisterController extends Controller
         ]);
     }
 
+    protected function responseFails($validator)
+    {
+        return response(
+            [
+                'status' => '403',
+                'data' => $validator->errors(),
+            ],
+            403
+        );
+    }
+
+    protected function responseSuccess($user)
+    {
+        return response(
+            [
+                'status' => '200',
+                'data' => $user,
+            ]
+        );
+    }
+
 
     public function register(Request $request)
     {
@@ -41,21 +62,15 @@ class RegisterController extends Controller
 
         if ($validator->fails()) {
 
-            return [
-                'status' => '403',
-                'data' => $validator->errors(),
-            ];
+            return $this->responseFails($validator);
 
         }
 
         $user = $this->create($request->all());
 
-        $mail = Mail::to($user->email)->send(new TokenApiShipped($user->api_token));
+        Mail::to($user->email)->send(new TokenApiShipped($user->api_token));
 
-        return [
-            'status' => '200',
-            'data' => $user,
-        ];
+        return $this->responseSuccess($user);
 
     }
 }
