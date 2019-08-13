@@ -35,7 +35,7 @@ class RegisterController extends Controller
 
     protected function responseFails($validator)
     {
-        return response(
+        return response()->json(
             [
                 'status' => '403',
                 'data' => $validator->errors(),
@@ -46,11 +46,12 @@ class RegisterController extends Controller
 
     protected function responseSuccess($user)
     {
-        return response(
+        return response()->json(
             [
                 'status' => '200',
                 'data' => $user,
-            ]
+            ],
+            200
         );
     }
 
